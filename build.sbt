@@ -8,5 +8,5 @@ resolvers += "Typesafe releases" at "https://repo.typesafe.com/typesafe/releases
 
 libraryDependencies ++= Seq(
 	 "com.mchange" % "c3p0" % "0.9.2-pre5",
-	 "play" % "play-jdbc_2.10" % "2.1.0"
+	 "play" % "play-jdbc_2.10" % "2.1.1"
 )
