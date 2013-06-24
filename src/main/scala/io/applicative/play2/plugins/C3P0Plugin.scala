@@ -165,6 +165,7 @@ class  C3P0Api(configuration: Configuration, classloader: ClassLoader) extends D
     datasource.setAcquireRetryAttempts(conf.getInt("acquireRetryAttempts").getOrElse(10))
     datasource.setMinPoolSize(conf.getInt("minPoolSize").getOrElse(10));
     datasource.setMaxPoolSize(conf.getInt("maxPoolSize").getOrElse(10));
+    datasource.setMaxIdleTime(conf.getInt("maxIdleTime").getOrElse(0));
                  
   
     // Bind in JNDI
