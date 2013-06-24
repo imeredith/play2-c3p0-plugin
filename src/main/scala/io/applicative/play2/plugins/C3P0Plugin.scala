@@ -163,7 +163,8 @@ class  C3P0Api(configuration: Configuration, classloader: ClassLoader) extends D
     datasource.setDriverClass(driver)
     datasource.setAcquireIncrement(conf.getInt("acquireIncrement").getOrElse(1))
     datasource.setAcquireRetryAttempts(conf.getInt("acquireRetryAttempts").getOrElse(10))
-    datasource.setMaxPoolSize(8);
+    datasource.setMinPoolSize(conf.getInt("minPoolSize").getOrElse(10));
+    datasource.setMaxPoolSize(conf.getInt("maxPoolSize").getOrElse(10));
                  
   
     // Bind in JNDI
