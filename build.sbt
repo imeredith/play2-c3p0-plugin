@@ -1,6 +1,6 @@
 name := "play2-c3p0-plugin"
 
-version := "0.2-SNAPSHOT"
+version := "0.3-SNAPSHOT"
 
 scalaVersion := "2.10.0"
 
