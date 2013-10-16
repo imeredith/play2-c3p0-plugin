@@ -46,24 +46,37 @@ class C3P0Plugin(app: Application) extends DBPlugin{
    */
   def api: DBApi = dbApi
 
+  var retries=0
+
   /**
    * Reads the configuration and connects to every data source.
    */
-  override def onStart() {
-    // Try to connect to each, this should be the first access to dbApi
-    dbApi.datasources.map { ds =>
+   def connect {   
+    retries=retries+1
+   dbApi.datasources.map { ds =>
       try {
         ds._1.getConnection.close()
         app.mode match {
-          case Mode.Test =>
-          case mode => Logger("play").info("aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))
+          case Mode.Test =>0
+          case mode => Logger("play").info("ret=" + retries + "aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))             
         }
       } catch {
-        case e: Exception => {
-          throw dbConfig.reportError(ds._2 + ".url", "aaCannot connect to database [" + ds._2 + "]", Some(e.getCause))
+        case e: Exception => {          
+          if(retries>20)  {
+            throw dbConfig.reportError(ds._2 + ".url", "aaCannot connect to database [" + ds._2 + "]", Some(e.getCause))        
+           }else{             
+              Thread.sleep(5000) 
+              connect
+           } 
         }
       }
     }
+  }
+  override def onStart() {
+    retries=0
+    connect
+    // Try to connect to each, this should be the first access to dbApi
+  
   }
 
   /**
