@@ -61,7 +61,7 @@ class C3P0Plugin(app: Application) extends DBPlugin{
           case Mode.Test =>
           case mode => {
             if(retries>1500)  {
-              Logger("play").info("aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))
+              Logger("play").info("ret=" + retries + "aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))
               }else{
                 Logger.info("Log reties=" +retries)
                 Thread.sleep(5000)
@@ -74,7 +74,7 @@ class C3P0Plugin(app: Application) extends DBPlugin{
         case e: Exception => {
           e.printStackTrace()
           if(retries>1500)  {
-              Logger("play").info("aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))
+              Logger("play").info("ret=" + retries + "aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))
            }else{
               Logger.info("Log reties=" +retries)
               Thread.sleep(5000)
