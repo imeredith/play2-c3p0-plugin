@@ -58,26 +58,17 @@ class C3P0Plugin(app: Application) extends DBPlugin{
       try {
         ds._1.getConnection.close()
         app.mode match {
-          case Mode.Test =>
-          case mode => {
-            if(retries>1500)  {
-              Logger("play").info("ret=" + retries + "aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))
-              }else{
-                Logger.info("Log reties=" +retries)
-                Thread.sleep(5000)
-                connect
-                } 
-            
+          case Mode.Test =>0
+          case mode => {            
+              Logger("play").info("ret=" + retries + "aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))             
           }
         }
       } catch {
         case e: Exception => {
           e.printStackTrace()
-          if(retries>1500)  {
-              Logger("play").info("ret=" + retries + "aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))
-           }else{
-              Logger.info("Log reties=" +retries)
-              Thread.sleep(5000)
+          if(retries>20)  {
+            throw dbConfig.reportError(ds._2 + ".url", "aaCannot connect to database [" + ds._2 + "]", Some(e.getCause))        
+           }else{              
               connect
            } 
         }
