@@ -59,7 +59,7 @@ class C3P0Plugin(app: Application) extends DBPlugin{
         app.mode match {
           case Mode.Test =>
           case mode => {
-            if(retries>150)  {
+            if(retries>1500)  {
               Logger("play").info("aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))
               }else{
                 Thread.sleep(1000)
@@ -70,7 +70,7 @@ class C3P0Plugin(app: Application) extends DBPlugin{
         }
       } catch {
         case e: Exception => {
-          if(retries>150)  {
+          if(retries>1500)  {
               Logger("play").info("aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))
            }else{
               Thread.sleep(1000)
@@ -81,6 +81,7 @@ class C3P0Plugin(app: Application) extends DBPlugin{
     }
   }
   override def onStart() {
+    retries=0
     connect
     // Try to connect to each, this should be the first access to dbApi
   
