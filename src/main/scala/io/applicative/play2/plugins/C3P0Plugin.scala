@@ -51,7 +51,8 @@ class C3P0Plugin(app: Application) extends DBPlugin{
   /**
    * Reads the configuration and connects to every data source.
    */
-   def connect { 
+   def connect {
+   Logger("play").info("Log reties=" +retries) 
     retries=retries+1
    dbApi.datasources.map { ds =>
       try {
@@ -63,7 +64,7 @@ class C3P0Plugin(app: Application) extends DBPlugin{
               Logger("play").info("aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))
               }else{
                 Logger.info("Log reties=" +retries)
-                Thread.sleep(5l000)
+                Thread.sleep(5000)
                 connect
                 } 
             
