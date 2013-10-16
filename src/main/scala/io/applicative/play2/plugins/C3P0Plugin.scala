@@ -51,27 +51,31 @@ class C3P0Plugin(app: Application) extends DBPlugin{
   /**
    * Reads the configuration and connects to every data source.
    */
-   def connect:Boolean= { 
+   def connect { 
     retries=retries+1
    dbApi.datasources.map { ds =>
       try {
         ds._1.getConnection.close()
         app.mode match {
-          case Mode.Test => true
+          case Mode.Test =>
           case mode => {
-            //Logger("play").info("aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))
-            Thread.sleep(1000)
-            if(retries>25)false  
-            else connect
+            if(retries>25)  {
+              Logger("play").info("aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))
+              }else{
+                Thread.sleep(1000)
+                connect
+                } 
             
           }
         }
       } catch {
         case e: Exception => {
-          //throw dbConfig.reportError(ds._2 + ".url", "aaCannot connect to database [" + ds._2 + "]", Some(e.getCause))
-          Thread.sleep(1000)
-          if(retries>25)false  
-          else connect
+          if(retries>25)  {
+              Logger("play").info("aaadatabase [" + ds._2 + "] connected at " + dbURL(ds._1.getConnection))
+           }else{
+              Thread.sleep(1000)
+              connect
+           } 
         }
       }
     }
